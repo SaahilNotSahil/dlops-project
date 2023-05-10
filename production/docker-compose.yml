@@ -1,0 +1,26 @@
+version: "3"
+
+volumes:
+  vilt_traefik: {}
+
+services:
+  streamlit:
+    build:
+      context: ..
+      dockerfile: ./streamlit/Dockerfile
+    image: xandertw/vilt:latest
+    container_name: dlops-project
+    restart: always
+    expose:
+      - "6969"
+
+  traefik:
+    build:
+      context: ..
+      dockerfile: ./traefik/Dockerfile
+    image: xandertw/traefik:latest
+    volumes:
+      - vilt_traefik:/etc/traefik/acme:z
+    ports:
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
